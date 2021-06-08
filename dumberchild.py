@@ -59,7 +59,7 @@ class DumberChild(discord.Client):
             
         if message.content.startswith('hello rebuild brain'):
             await message.reply('hello brain reload in progress', mention_author=True)
-            await self.reload_brain()
+            self.reload_brain()
                                                         
 DISCORD_TOKEN = os.getenv("DISCORD_TOKEN")
 
