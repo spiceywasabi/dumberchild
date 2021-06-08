@@ -21,7 +21,7 @@ class DumberChild(discord.Client):
            self.reload_brain()
        else:
            self.brain = aiml.Kernel()
-           brain.bootstrap(brainFile = self.brain_file)   
+           self.brain.bootstrap(brainFile = self.brain_file)   
            self.brainLoaded = True
         
     def reload_brain(self):
