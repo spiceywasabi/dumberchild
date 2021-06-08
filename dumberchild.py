@@ -10,6 +10,7 @@ class DumberChild(discord.Client):
     brain_file = None
     brain_xml = None
     brainLoaded = False
+    brainLobotomy = False
     
     def load_aiml(self):
        self.brain_file=os.getenv("AIML_BRAIN")
@@ -26,12 +27,13 @@ class DumberChild(discord.Client):
     def reload_brain(self):
       if not os.path.exists(self.brain_xml):
           print("error, cannot reload brain or load brain xml data to init")
-      if os.path.exists(self.brain_file):
+      if os.path.exists(self.brain_file) and self.brainLobotomy:
           os.path.unlink(self.brain_file)
           print("brain existed, and is being removed")
       self.brain = aiml.Kernel()
       self.brain.bootstrap(learnFiles=self.brain_xml, commands="load aiml b") 
       self.brainLoaded = True
+      self.brain.saveBrain(self.brain_file)
 
     async def on_ready(self):
         print(f'Logged in as {self.user} (ID: {self.user.id})')
@@ -44,8 +46,9 @@ class DumberChild(discord.Client):
         if client.user.mentioned_in(message):
             if self.brainLoaded:
                try:
-                  await message.reply(self.brain.respond(str(message.content)))
-               except: Exception as e:
+                  processed_msg = re.sub(r'<@![0-9]+> ', r'', str(message.content),re.MULTILINE)
+                  await message.reply(self.brain.respond(processed_msg))
+               except Exception as e:
                   print("error: ",e)
                   await message.reply("I am attempting to fill a silent moment with non-relevant conversation.")
             else:
