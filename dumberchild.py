@@ -46,7 +46,7 @@ class DumberChild(discord.Client):
         if client.user.mentioned_in(message):
             if self.brainLoaded:
                try:
-                  processed_msg = re.sub(r'<@![0-9]+> ', r'', str(message.content),re.MULTILINE)
+                  processed_msg = re.sub(r'<@[!|?][0-9]+> ', r'', str(message.content),re.MULTILINE)
                   await message.reply(self.brain.respond(processed_msg))
                except Exception as e:
                   print("error: ",e)
