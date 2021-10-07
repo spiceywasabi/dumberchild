@@ -1,6 +1,6 @@
 import sys, os
 import re
-import discord
+import nextcord as discord
 import aiml
 
 # Note: Requires this specific version of PyAIML https://github.com/weddige/pyaiml3 
