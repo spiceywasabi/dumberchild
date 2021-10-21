@@ -13,7 +13,7 @@ COPY app/ /app
 RUN python3 -m venv /app/
 WORKDIR /app/
 
-RUN pip3 install --no-cache-dir --upgrade pip && pip3 install --no-cache-dir discord requests
+RUN pip3 install --no-cache-dir --upgrade pip && pip3 install --no-cache-dir discord nextcord requests
 RUN pwd && wget https://github.com/weddige/pyaiml3/archive/refs/heads/master.zip -O pythonaiml.zip \
   && unzip pythonaiml.zip && cd pyaiml3-master && python3 setup.py install \
   && cd .. && rm pythonaiml.zip && rm -r pyaiml3-master && cd /
