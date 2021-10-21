@@ -1,4 +1,4 @@
-
+# make a builder to pull data from
 FROM alpine:latest AS builder
 
 RUN apk update && apk --no-cache add unzip python3 python3-dev py3-setuptools py3-pip wget bash py3-virtualenv alpine-sdk
@@ -28,6 +28,7 @@ COPY --from=builder /app /app
 COPY entrypoint.sh /entrypoint.sh
 WORKDIR /app
 
+# this is how you activate a venv via docker
 ENV VIRTUAL_ENV=/app
 ENV PATH="/app:/app/bin:$PATH"
 ENV LANG=C.UTF-8
@@ -37,9 +38,10 @@ ENV BOTINCONTAINER 1
 ENV AIML_XML /app/aiml/std-startup.xml
 ENV AIML_BRAIN /data/bot.brn
 
-RUN apk update && apk --no-cache add python3 py3-virtualenv && rm -rf /usr/lib/python3.9/__pycache__/ \
+RUN chmod +x /*.sh && apk update && apk --no-cache add python3 py3-virtualenv && rm -rf /usr/lib/python3.9/__pycache__/ \
  && ln -s /app/aiml/* /app/ && find / -name __pycache__ -type d -exec rm -r "{}" \; || echo "running clean"
 
 VOLUME /data
 
-ENTRYPOINT ["/entrypoint.sh"]
+# docker style entrypoints ['cmd'] are broken in podman
+ENTRYPOINT /entrypoint.sh
